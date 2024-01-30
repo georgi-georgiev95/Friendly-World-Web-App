@@ -19,3 +19,11 @@ exports.auth = async (req, res, next) => {
         next();
     }
 };
+
+exports.isAuth = async (req, res, next) => {
+    if (!req.user?.id) {
+        res.redirect('/404');
+    }
+
+    next();
+}
