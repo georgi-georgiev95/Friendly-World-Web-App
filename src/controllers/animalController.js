@@ -14,6 +14,6 @@ router.post('/create', async (req, res) => {
 
     await animalManager.create(animalData)
     res.redirect('/');
-})
+});
 
 module.exports = router;
