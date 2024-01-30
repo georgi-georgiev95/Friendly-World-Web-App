@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const handlebars = require('express-handlebars');
 const path = require('path');
 
 const ENV = require('./utils/constants');
@@ -18,6 +19,13 @@ app.use(express.urlencoded({ extended: false }));
 
 // static
 app.use(express.static(path.resolve(__dirname, './public')));
+
+// setup view engine
+app.engine('hbs', handlebars.engine({
+    extname: 'hbs'
+}));
+app.set('view engine', 'hbs');
+app.set('views', 'src/views');
 
 // router
 app.use(router);
