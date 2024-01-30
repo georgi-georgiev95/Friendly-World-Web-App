@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const handlebars = require('express-handlebars');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const {auth } = require('./middlewares/authMiddleware');
 
 const ENV = require('./utils/constants');
 const router = require('./router');
@@ -30,6 +31,7 @@ app.set('views', 'src/views');
 
 // router
 app.use(cookieParser());
+app.use(auth);
 app.use(router);
 
 app.listen(ENV.PORT, () => console.log(`App is listening on port: ${ENV.PORT}`));
