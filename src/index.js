@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
 
 const ENV = require('./utils/constants');
 const router = require('./router');
@@ -11,6 +12,12 @@ const app = express();
 mongoose.connect(ENV.DB_URI)
     .then(() => console.log('Connected to DB...'))
     .catch((err) => console.log(err));
+
+// body parser
+app.use(express.urlencoded({ extended: false }));
+
+// static
+app.use(express.static(path.resolve(__dirname, './public')));
 
 // router
 app.use(router);
