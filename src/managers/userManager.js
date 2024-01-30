@@ -1,10 +1,16 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 
-exports.create = (userData) => User.create(userData);
+const generateToken = require('../utils/generateToken');
 
-exports.getOne = async (userData) => {
-    const user = await User.find({ email: userData.email });
+exports.register = async (userData) => {
+    const user = await User.create(userData);
+    const token = generateToken(user);
+    return token;
+};
+
+exports.login = async (userData) => {
+    const user = await User.findOne({ email: userData.email });
 
     if (!user) {
         throw new Error('Wrong username or password!');
@@ -16,5 +22,7 @@ exports.getOne = async (userData) => {
         throw new Error('Wrong username or password!');
     }
 
-    return user;
+    const token = generateToken(user);
+
+    return token;
 }

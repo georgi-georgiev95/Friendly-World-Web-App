@@ -15,31 +15,26 @@ router.get('/login', (req, res) => {
 
 router.post('/login', async (req, res) => {
     const userData = req.body;
-
+    console.log(userData);
     try {
-        const user = await userManager.getOne(userData);
-        const token = await generateToken(user);
-
+        const token = await userManager.login(userData);
         res.cookie(ENV.COOKIE_NAME, token);
-
         res.redirect('/')
     } catch (err) {
-        res.render('/users/login', { err });
+        res.render('users/login', { err });
+        console.log(err);
     }
 })
 
 router.post('/register', async (req, res) => {
     const userData = req.body;
+
     try {
-        const user = await userManager.create(userData);
-    
-        const token = await generateToken(user);
-    
+        const token = await userManager.register(userData);  
         res.cookie(ENV.COOKIE_NAME, token);
-    
         res.redirect('/');
     } catch (err) {
-        res.render('/users/register', {err});
+        res.render('users/register', {err});
     }
 });
 
