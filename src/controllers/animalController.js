@@ -65,6 +65,12 @@ router.get('/delete/:animalId', isAuth, async (req, res) => {
     await animalManager.delete(req.params.animalId);
 
     res.redirect('/animals/dashboard');
+});
+
+router.get('/search', async (req, res) => {
+    const animals = await animalManager.getAll().lean();
+
+    res.render('animals/search', {animals})
 })
 
 module.exports = router;
