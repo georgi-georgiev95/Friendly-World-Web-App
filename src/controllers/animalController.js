@@ -1,12 +1,13 @@
 const router = require('express').Router();
 
 const animalManager = require('../managers/animalManager');
+const { isAuth } = require('../middlewares/authMiddleware');
 
-router.get('/create', (req, res) => {
+router.get('/create', isAuth, (req, res) => {
     res.render('animals/create')
 });
 
-router.post('/create', async (req, res) => {
+router.post('/create', isAuth, async (req, res) => {
     const animalData = {
         ...req.body,
         owner: req.user.id
@@ -32,7 +33,7 @@ router.get('/details/:animalId', async (req, res) => {
     res.render('animals/details', { animal, isUser, isOwner, hasDonated });
 });
 
-router.get('/donate/:animalId', async (req, res) => {
+router.get('/donate/:animalId', isAuth, async (req, res) => {
     const userId = req.user.id;
     const animalId = req.params.animalId;
 
@@ -41,14 +42,14 @@ router.get('/donate/:animalId', async (req, res) => {
     res.redirect(`/animals/details/${animalId}`);
 });
 
-router.get('/edit/:animalId', async (req, res) => {
+router.get('/edit/:animalId', isAuth, async (req, res) => {
     const animalId = req.params.animalId;
     const animal = await animalManager.getOne(animalId).lean();
 
     res.render('animals/edit', { animal });
 });
 
-router.post('/edit/:animalId', async (req, res) => {
+router.post('/edit/:animalId', isAuth, async (req, res) => {
     const animalId = req.params.animalId;
     const animalData = req.body;
 
@@ -57,7 +58,7 @@ router.post('/edit/:animalId', async (req, res) => {
     res.redirect(`/animals/details/${animalId}`)
 })
 
-router.get('/delete/:animalId', async (req, res) => {
+router.get('/delete/:animalId', isAuth, async (req, res) => {
     await animalManager.delete(req.params.animalId);
 
     res.redirect('/animals/dashboard');

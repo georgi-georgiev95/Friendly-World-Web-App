@@ -1,7 +1,6 @@
 const router = require('express').Router();
 
 const userManager = require('../managers/userManager');
-const generateToken = require('../utils/generateToken');
 const ENV = require('../utils/constants');
 
 
