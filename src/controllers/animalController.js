@@ -12,9 +12,12 @@ router.post('/create', isAuth, async (req, res) => {
         ...req.body,
         owner: req.user.id
     };
-
-    await animalManager.create(animalData)
-    res.redirect('/');
+    try {
+        await animalManager.create(animalData)
+        res.redirect('/');     
+    } catch (err) {
+        res.render('animals/create', {err})
+    }
 });
 
 router.get('/dashboard', async (req, res) => {
