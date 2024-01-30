@@ -16,7 +16,7 @@ router.post('/create', isAuth, async (req, res) => {
         await animalManager.create(animalData)
         res.redirect('/');     
     } catch (err) {
-        res.render('animals/create', {err})
+        res.render('animals/create', {err, animalData})
     }
 });
 
@@ -55,10 +55,13 @@ router.get('/edit/:animalId', isAuth, async (req, res) => {
 router.post('/edit/:animalId', isAuth, async (req, res) => {
     const animalId = req.params.animalId;
     const animalData = req.body;
-
-    await animalManager.update(animalId, animalData);
-
-    res.redirect(`/animals/details/${animalId}`)
+    
+    try {
+        await animalManager.update(animalId, animalData);
+        res.redirect(`/animals/details/${animalId}`)
+    } catch (err) { 
+        res.render('animals/details', { err });
+    }
 })
 
 router.get('/delete/:animalId', isAuth, async (req, res) => {
