@@ -16,4 +16,10 @@ router.post('/create', async (req, res) => {
     res.redirect('/');
 });
 
+router.get('/dashboard', async (req, res) => {
+    const animals = await animalManager.getAll().lean();
+    const noAnimals = animals.length == 0 ? true : false;
+    res.render('animals/dashboard', { animals, noAnimals });
+})
+
 module.exports = router;
