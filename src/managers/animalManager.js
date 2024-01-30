@@ -6,4 +6,6 @@ exports.getLastThree = () => Animal.find().sort({ createdAt: -1 }).limit(3);
 
 exports.getAll = () => Animal.find();
 
-exports.getOne = (animalId) => Animal.findById(animalId);
+exports.getOne = (animalId) => Animal.findById(animalId).populate('donations');
+
+exports.donate = (animalId, userId) => Animal.findByIdAndUpdate(animalId, {$push : {donations: userId}})

@@ -25,7 +25,20 @@ router.get('/dashboard', async (req, res) => {
 router.get('/details/:animalId', async (req, res) => {
     const animal = await animalManager.getOne(req.params.animalId).lean();
 
-    res.render('animals/details', { animal });
-})
+    const isOwner = animal.owner == req.user?.id;
+    const isUser = req.user?.id ? true : false;
+    const hasDonated = animal.donations.some(x => x._id == req.user?.id);
+
+    res.render('animals/details', { animal, isUser, isOwner, hasDonated });
+});
+
+router.get('/donate/:animalId', async (req, res) => {
+    const userId = req.user.id;
+    const animalId = req.params.animalId;
+
+    await animalManager.donate(animalId, userId);
+
+    res.redirect(`/animals/details/${animalId}`);
+}) 
 
 module.exports = router;
