@@ -20,6 +20,12 @@ router.get('/dashboard', async (req, res) => {
     const animals = await animalManager.getAll().lean();
     const noAnimals = animals.length == 0 ? true : false;
     res.render('animals/dashboard', { animals, noAnimals });
+});
+
+router.get('/details/:animalId', async (req, res) => {
+    const animal = await animalManager.getOne(req.params.animalId).lean();
+
+    res.render('animals/details', { animal });
 })
 
 module.exports = router;
