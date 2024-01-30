@@ -69,8 +69,9 @@ router.get('/delete/:animalId', isAuth, async (req, res) => {
 
 router.get('/search', async (req, res) => {
     const animals = await animalManager.getAll().lean();
+    const hasAnimals = animals.length !== 0 ? true : false;
 
-    res.render('animals/search', {animals})
+    res.render('animals/search', {animals, hasAnimals})
 })
 
 module.exports = router;
