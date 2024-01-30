@@ -39,6 +39,28 @@ router.get('/donate/:animalId', async (req, res) => {
     await animalManager.donate(animalId, userId);
 
     res.redirect(`/animals/details/${animalId}`);
-}) 
+});
+
+router.get('/edit/:animalId', async (req, res) => {
+    const animalId = req.params.animalId;
+    const animal = await animalManager.getOne(animalId).lean();
+
+    res.render('animals/edit', { animal });
+});
+
+router.post('/edit/:animalId', async (req, res) => {
+    const animalId = req.params.animalId;
+    const animalData = req.body;
+
+    await animalManager.update(animalId, animalData);
+
+    res.redirect(`/animals/details/${animalId}`)
+})
+
+router.get('/delete/:animalId', async (req, res) => {
+    await animalManager.delete(req.params.animalId);
+
+    res.redirect('/animals/dashboard');
+})
 
 module.exports = router;

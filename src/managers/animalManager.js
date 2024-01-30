@@ -8,4 +8,8 @@ exports.getAll = () => Animal.find();
 
 exports.getOne = (animalId) => Animal.findById(animalId).populate('donations');
 
-exports.donate = (animalId, userId) => Animal.findByIdAndUpdate(animalId, {$push : {donations: userId}})
+exports.donate = (animalId, userId) => Animal.findByIdAndUpdate(animalId, { $push: { donations: userId } });
+
+exports.delete = (animalId) => Animal.findByIdAndDelete(animalId);
+
+exports.update = (animalId, animalData) => Animal.findByIdAndUpdate(animalId, animalData);
